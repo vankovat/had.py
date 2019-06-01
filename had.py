@@ -67,7 +67,7 @@ def vykresli():
     x, y = souradnice[-1]
     x1, y1 = souradnice[-2]
     orientace = (x-x1, y-y1)
-    nazev = ocas[orientace] + '-tongue'
+    nazev = ocas[orientace] + hlava
     snake_tiles[nazev].x = x*window.width/velikost_pole
     snake_tiles[nazev].y = y*window.height/velikost_pole
     snake_tiles[nazev].draw()
@@ -108,5 +108,17 @@ window.push_handlers(
     on_draw=vykresli,
     on_key_press=klavesnice,
 )
+
+hlava = '-tongue'
+def zmen(t):
+    global hlava
+    hlava = '-tongue'
+    pyglet.clock.schedule_once(zmen_zpet, 0.5)
+
+def zmen_zpet(t):
+    global hlava
+    hlava = '-head'
+    pyglet.clock.schedule_once(zmen, 0.5)
+pyglet.clock.schedule_once(zmen_zpet, 0.5)
 
 pyglet.app.run()
