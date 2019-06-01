@@ -9,7 +9,6 @@ snake_tiles = {}
 for path in TILES_DIRECTORY.glob('*.png'):
     snake_tiles[path.stem] = pyglet.sprite.Sprite(pyglet.image.load(path))
     snake_tiles[path.stem].scale = 10/velikost_pole
-print(snake_tiles)
 
 def pohyb(souradnice, jidlo):
     posledni = souradnice[-1]
@@ -31,7 +30,6 @@ def pohyb(souradnice, jidlo):
         potrava(souradnice, jidlo)
     else:
         souradnice.pop(0)
-    print(souradnice)
 
 def potrava(souradnice, jidlo):
     while True:
@@ -60,16 +58,35 @@ def vykresli():
         snake_tiles['right-right'].y = y*window.height/velikost_pole
         snake_tiles['right-right'].draw()
 
-    x,y = souradnice[-1]
-    snake_tiles['left-tongue'].x = x*window.width/velikost_pole
-    snake_tiles['left-tongue'].y = y*window.height/velikost_pole
-    snake_tiles['left-tongue'].draw()
+    if strana == 'v':
+        x,y = souradnice[-1]
+        snake_tiles['left-tongue'].x = x*window.width/velikost_pole
+        snake_tiles['left-tongue'].y = y*window.height/velikost_pole
+        snake_tiles['left-tongue'].draw()
+
+    if strana == 'z':
+        x,y = souradnice[-1]
+        snake_tiles['right-tongue'].x = x*window.width/velikost_pole
+        snake_tiles['right-tongue'].y = y*window.height/velikost_pole
+        snake_tiles['right-tongue'].draw()
+
+    if strana == 'j':
+        x,y = souradnice[-1]
+        snake_tiles['bottom-tongue'].x = x*window.width/velikost_pole
+        snake_tiles['bottom-tongue'].y = y*window.height/velikost_pole
+        snake_tiles['bottom-tongue'].draw()
+
+    if strana == 's':
+        x,y = souradnice[-1]
+        snake_tiles['top-tongue'].x = x*window.width/velikost_pole
+        snake_tiles['top-tongue'].y = y*window.height/velikost_pole
+        snake_tiles['top-tongue'].draw()
 
     x,y = souradnice[0]
     snake_tiles['tail-right'].x = x*window.width/velikost_pole
     snake_tiles['tail-right'].y = y*window.height/velikost_pole
     snake_tiles['tail-right'].draw()
-    
+
     for x,y in jidlo:
         jablko.x = x*window.width/velikost_pole
         jablko.y = y*window.height/velikost_pole
