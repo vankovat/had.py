@@ -45,18 +45,20 @@ jidlo = []
 potrava(souradnice, jidlo)
 strana = 'v'
 
-had = snake_tiles['tail-head']
-
 obrazek2 = pyglet.image.load('apple.png')
 jablko = pyglet.sprite.Sprite(obrazek2)
 jablko.scale = 10/velikost_pole
 
 def vykresli():
     window.clear()
-    for x,y in souradnice[1:-1]:
-        snake_tiles['right-right'].x = x*window.width/velikost_pole
-        snake_tiles['right-right'].y = y*window.height/velikost_pole
-        snake_tiles['right-right'].draw()
+    for i in range(1, len(souradnice)-1):
+        x, y = souradnice[i]
+        x1, y1 = souradnice[i+1]
+        orientace = (x-x1, y-y1)
+        nazev = 'body-'+ telo[orientace]
+        snake_tiles[nazev].x = x*window.width/velikost_pole
+        snake_tiles[nazev].y = y*window.height/velikost_pole
+        snake_tiles[nazev].draw()
 
     if strana == 'v':
         x,y = souradnice[-1]
@@ -82,15 +84,29 @@ def vykresli():
         snake_tiles['top-tongue'].y = y*window.height/velikost_pole
         snake_tiles['top-tongue'].draw()
 
-    x,y = souradnice[0]
-    snake_tiles['tail-right'].x = x*window.width/velikost_pole
-    snake_tiles['tail-right'].y = y*window.height/velikost_pole
-    snake_tiles['tail-right'].draw()
+    x, y = souradnice[0]
+    x1, y1 = souradnice[1]
+    orientace = (x-x1, y-y1)
+    nazev = 'tail-'+ ocas[orientace]
+    snake_tiles[nazev].x = x*window.width/velikost_pole
+    snake_tiles[nazev].y = y*window.height/velikost_pole
+    snake_tiles[nazev].draw()
+
+    x, y = souradnice[1]
+    x1, y1 = souradnice[2]
+    orientace = (x-x1, y-y1)
+    nazev = 'body-'+ telo[orientace]
+    snake_tiles[nazev].x = x*window.width/velikost_pole
+    snake_tiles[nazev].y = y*window.height/velikost_pole
+    snake_tiles[nazev].draw()
 
     for x,y in jidlo:
         jablko.x = x*window.width/velikost_pole
         jablko.y = y*window.height/velikost_pole
         jablko.draw()
+
+ocas = {(-1, 0): 'right', (1, 0): 'left', (0, 1): 'bottom', (0, -1): 'top'}
+telo = {(-1, 0): 'right', (1, 0): 'right', (0, 1): 'top', (0, -1): 'top'}
 
 def klavesnice(sym, mod):
     global strana
