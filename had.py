@@ -3,6 +3,7 @@ from random import randrange
 from pyglet.window.key import UP, DOWN, LEFT, RIGHT
 from pathlib import Path
 window = pyglet.window.Window(640, 640)
+window.set_location(20, 30)
 velikost_pole = 20
 TILES_DIRECTORY = Path('snake-tiles')
 snake_tiles = {}
@@ -54,35 +55,22 @@ def vykresli():
     for i in range(1, len(souradnice)-1):
         x, y = souradnice[i]
         x1, y1 = souradnice[i+1]
+        x2, y2 = souradnice[i-1]
         orientace = (x-x1, y-y1)
+        orientace2 = (x-x2, y-y2)
         nazev = 'body-'+ telo[orientace]
+        nazev = ocas[orientace2] + '-' + ocas[orientace]
         snake_tiles[nazev].x = x*window.width/velikost_pole
         snake_tiles[nazev].y = y*window.height/velikost_pole
         snake_tiles[nazev].draw()
 
-    if strana == 'v':
-        x,y = souradnice[-1]
-        snake_tiles['left-tongue'].x = x*window.width/velikost_pole
-        snake_tiles['left-tongue'].y = y*window.height/velikost_pole
-        snake_tiles['left-tongue'].draw()
-
-    if strana == 'z':
-        x,y = souradnice[-1]
-        snake_tiles['right-tongue'].x = x*window.width/velikost_pole
-        snake_tiles['right-tongue'].y = y*window.height/velikost_pole
-        snake_tiles['right-tongue'].draw()
-
-    if strana == 'j':
-        x,y = souradnice[-1]
-        snake_tiles['bottom-tongue'].x = x*window.width/velikost_pole
-        snake_tiles['bottom-tongue'].y = y*window.height/velikost_pole
-        snake_tiles['bottom-tongue'].draw()
-
-    if strana == 's':
-        x,y = souradnice[-1]
-        snake_tiles['top-tongue'].x = x*window.width/velikost_pole
-        snake_tiles['top-tongue'].y = y*window.height/velikost_pole
-        snake_tiles['top-tongue'].draw()
+    x, y = souradnice[-1]
+    x1, y1 = souradnice[-2]
+    orientace = (x-x1, y-y1)
+    nazev = ocas[orientace] + '-tongue'
+    snake_tiles[nazev].x = x*window.width/velikost_pole
+    snake_tiles[nazev].y = y*window.height/velikost_pole
+    snake_tiles[nazev].draw()
 
     x, y = souradnice[0]
     x1, y1 = souradnice[1]
@@ -92,13 +80,6 @@ def vykresli():
     snake_tiles[nazev].y = y*window.height/velikost_pole
     snake_tiles[nazev].draw()
 
-    x, y = souradnice[1]
-    x1, y1 = souradnice[2]
-    orientace = (x-x1, y-y1)
-    nazev = 'body-'+ telo[orientace]
-    snake_tiles[nazev].x = x*window.width/velikost_pole
-    snake_tiles[nazev].y = y*window.height/velikost_pole
-    snake_tiles[nazev].draw()
 
     for x,y in jidlo:
         jablko.x = x*window.width/velikost_pole
